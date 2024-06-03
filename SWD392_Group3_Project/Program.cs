@@ -1,30 +1,29 @@
-namespace SWD392_Group3_Project
+using Microsoft.EntityFrameworkCore;
+using SWD392_Group3_Project.Entities;
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+ // Add services to the container.
+ builder.Services.AddRazorPages();
+builder.Services.AddDbContext<RestaurantManagementContext>(option =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+option.UseSqlServer(builder.Configuration.GetConnectionString("Test"));
+});
+ var app = builder.Build();
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+     app.UseExceptionHandler("/Error");
+ }
+app.UseStaticFiles();
 
-            var app = builder.Build();
+app.UseRouting();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-            }
-            app.UseStaticFiles();
+app.UseAuthorization();
 
-            app.UseRouting();
+app.MapRazorPages();
 
-            app.UseAuthorization();
-
-            app.MapRazorPages();
-
-            app.Run();
-        }
-    }
-}
+app.Run();
+ 
