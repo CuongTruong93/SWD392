@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SWD392_RestaurantManagementSystem.Models;
+using SWD392_RestaurantManagementSystem.Services;
 
 namespace SWD392_RestaurantManagementSystem
 {

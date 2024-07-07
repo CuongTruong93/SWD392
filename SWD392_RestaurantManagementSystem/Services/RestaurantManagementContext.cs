@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SWD392_RestaurantManagementSystem.Models;
 
-namespace SWD392_RestaurantManagementSystem.Models;
+namespace SWD392_RestaurantManagementSystem.Services;
 
 public partial class RestaurantManagementContext : DbContext
 {
