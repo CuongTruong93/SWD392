@@ -37,5 +37,11 @@ namespace SWD392_RestaurantManagementSystem.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Login");
+        }
     }
 }
