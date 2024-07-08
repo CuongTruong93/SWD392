@@ -25,6 +25,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @* Hiển thị mục điều hướng dựa trên vai trò *@
+                        @{
+                            var roleId = Context.Session.GetInt32("RoleId");
+
+                            if (roleId == 1)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="BillingInfoes" asp-action="Index">Billing Infomation</a>
+                                </li>
+                            }
+                            else if (roleId == 2)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="MenuItems" asp-action="Index">Menu Items</a>
+                                </li>
+                            }
+                            else if (roleId == 3)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>
