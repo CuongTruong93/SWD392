@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SWD392_RestaurantManagementSystem.Models;
+using SWD392_RestaurantManagementSystem.Services;
 
 namespace SWD392_RestaurantManagementSystem
 {
@@ -10,7 +11,11 @@ namespace SWD392_RestaurantManagementSystem
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<RestaurantManagementContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+
+           
+            builder.Services.AddSession();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -27,9 +32,12 @@ namespace SWD392_RestaurantManagementSystem
 
             app.UseAuthorization();
 
+          
+            app.UseSession();
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=BillingInfoes}/{action=Index}/{id?}");
+                pattern: "{controller=Login}/{action=Login}/{id?}");
 
             app.Run();
         }

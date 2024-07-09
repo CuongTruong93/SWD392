@@ -10,23 +10,23 @@ using SWD392_RestaurantManagementSystem.Services;
 
 namespace SWD392_RestaurantManagementSystem.Controllers
 {
-    public class BillingInfoesController : Controller
+    public class StaffsController : Controller
     {
         private readonly RestaurantManagementContext _context;
 
-        public BillingInfoesController(RestaurantManagementContext context)
+        public StaffsController(RestaurantManagementContext context)
         {
             _context = context;
         }
 
-        // GET: BillingInfoes
+        // GET: Staffs
         public async Task<IActionResult> Index()
         {
-            var restaurantManagementContext = _context.BillingInfos.Include(b => b.Cashier).Include(b => b.Order);
+            var restaurantManagementContext = _context.Staff.Include(s => s.User);
             return View(await restaurantManagementContext.ToListAsync());
         }
 
-        // GET: BillingInfoes/Details/5
+        // GET: Staffs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,42 @@ namespace SWD392_RestaurantManagementSystem.Controllers
                 return NotFound();
             }
 
-            var billingInfo = await _context.BillingInfos
-                .Include(b => b.Cashier)
-                .Include(b => b.Order)
-                .FirstOrDefaultAsync(m => m.BillingId == id);
-            if (billingInfo == null)
+            var staff = await _context.Staff
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.StaffId == id);
+            if (staff == null)
             {
                 return NotFound();
             }
 
-            return View(billingInfo);
+            return View(staff);
         }
 
-        // GET: BillingInfoes/Create
+        // GET: Staffs/Create
         public IActionResult Create()
         {
-            ViewData["CashierId"] = new SelectList(_context.Users, "UserId", "UserId");
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
-        // POST: BillingInfoes/Create
+        // POST: Staffs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BillingId,OrderId,CashierId,BillingDate,Amount,PaymentMethod")] BillingInfo billingInfo)
+        public async Task<IActionResult> Create([Bind("StaffId,UserId,Position,Salary,HireDate")] Staff staff)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(billingInfo);
+                _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CashierId"] = new SelectList(_context.Users, "UserId", "UserId", billingInfo.CashierId);
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", billingInfo.OrderId);
-            return View(billingInfo);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
+            return View(staff);
         }
 
-        // GET: BillingInfoes/Edit/5
+        // GET: Staffs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +77,23 @@ namespace SWD392_RestaurantManagementSystem.Controllers
                 return NotFound();
             }
 
-            var billingInfo = await _context.BillingInfos.FindAsync(id);
-            if (billingInfo == null)
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff == null)
             {
                 return NotFound();
             }
-            ViewData["CashierId"] = new SelectList(_context.Users, "UserId", "UserId", billingInfo.CashierId);
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", billingInfo.OrderId);
-            return View(billingInfo);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
+            return View(staff);
         }
 
-        // POST: BillingInfoes/Edit/5
+        // POST: Staffs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BillingId,OrderId,CashierId,BillingDate,Amount,PaymentMethod")] BillingInfo billingInfo)
+        public async Task<IActionResult> Edit(int id, [Bind("StaffId,UserId,Position,Salary,HireDate")] Staff staff)
         {
-            if (id != billingInfo.BillingId)
+            if (id != staff.StaffId)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace SWD392_RestaurantManagementSystem.Controllers
             {
                 try
                 {
-                    _context.Update(billingInfo);
+                    _context.Update(staff);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BillingInfoExists(billingInfo.BillingId))
+                    if (!StaffExists(staff.StaffId))
                     {
                         return NotFound();
                     }
@@ -122,12 +118,11 @@ namespace SWD392_RestaurantManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CashierId"] = new SelectList(_context.Users, "UserId", "UserId", billingInfo.CashierId);
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", billingInfo.OrderId);
-            return View(billingInfo);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
+            return View(staff);
         }
 
-        // GET: BillingInfoes/Delete/5
+        // GET: Staffs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,36 +130,35 @@ namespace SWD392_RestaurantManagementSystem.Controllers
                 return NotFound();
             }
 
-            var billingInfo = await _context.BillingInfos
-                .Include(b => b.Cashier)
-                .Include(b => b.Order)
-                .FirstOrDefaultAsync(m => m.BillingId == id);
-            if (billingInfo == null)
+            var staff = await _context.Staff
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.StaffId == id);
+            if (staff == null)
             {
                 return NotFound();
             }
 
-            return View(billingInfo);
+            return View(staff);
         }
 
-        // POST: BillingInfoes/Delete/5
+        // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var billingInfo = await _context.BillingInfos.FindAsync(id);
-            if (billingInfo != null)
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff != null)
             {
-                _context.BillingInfos.Remove(billingInfo);
+                _context.Staff.Remove(staff);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BillingInfoExists(int id)
+        private bool StaffExists(int id)
         {
-            return _context.BillingInfos.Any(e => e.BillingId == id);
+            return _context.Staff.Any(e => e.StaffId == id);
         }
     }
 }
