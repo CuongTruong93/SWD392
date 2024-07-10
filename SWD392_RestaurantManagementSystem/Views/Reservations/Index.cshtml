@@ -12,6 +12,14 @@
 <table class="table">
     <thead>
         <tr>
+            <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Admin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ReservationDate)
             </th>
@@ -19,35 +27,29 @@
                 @Html.DisplayNameFor(model => model.NumberOfGuests)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
+            @Html.DisplayNameFor(model => model.Status)
+            </th> 
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfGuests)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.UserId)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Admin.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfGuests)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ReservationId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a> |
